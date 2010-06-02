@@ -1,0 +1,14 @@
+commands:
+	report 
+	publish
+config dir:
+	extra libraries to require
+	publication configuration
+general:
+	move runner into core
+	move runner/commands in another directory (e.g. /commands or /base/commands or /core/commands)
+	status error of scenarii
+	roles
+	better git/other SCM integration
+	database integration
+	datamining integration

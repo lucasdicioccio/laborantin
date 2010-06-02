@@ -1,0 +1,5 @@
+Laborantin is a measurement batch facilitator.
+When you need to perform a lot of measurements varying some parameters, Laborantin helps you to stay organized.
+It provides an abstraction of environments and scenarii, vary all possible parameters and store everything in directories.
+
+Next, it will ease the reprocessing of measurements, synchronization to send reports to a backup server, and maybe provide some coordination with distant nodes.

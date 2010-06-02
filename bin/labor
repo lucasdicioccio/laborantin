@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'laborantin'
+require 'laborantin/runner'
+
+Laborantin::CliRunner.instance.run_argv(ARGV)
