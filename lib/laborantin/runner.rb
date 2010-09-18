@@ -38,10 +38,12 @@ require	'optparse'
 require 'find'
 require 'yaml'
 require 'singleton'
+require 'laborantin/core/configurable'
 
 module Laborantin
 
   class Runner
+    include Metaprog::Configurable
     include Singleton
     # The configuration of the Runner, a hash serialized in the laborantin.yaml
     # file.
@@ -77,15 +79,8 @@ module Laborantin
       File.join(dir, sym)
     end
 
-    def configfile_path
+    def config_path
       file(dir(:config), 'laborantin.yaml')
-    end
-
-    def configure
-      if File.file? configfile_path
-        @config = YAML.load_file(configfile_path)
-      end
-      @config ||= {}
     end
 
     def load_dir(path)
@@ -146,7 +141,7 @@ module Laborantin
 
     # Prepare a Runner by loading the configuration and the extra commands.
     def prepare
-      configure
+      load_config!
       load_user_commands
       load_commands
       load_environments

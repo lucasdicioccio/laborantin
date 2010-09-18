@@ -21,7 +21,7 @@ module Laborantin::Commands
     # Stores the runner configuration into the configuration file.
     def save_config
       raise RootNotHashError unless runner.config.is_a? Hash
-      File.open(runner.configfile_path, 'w') do |f|
+      File.open(runner.config_path, 'w') do |f|
         f.puts YAML.dump(runner.config)
       end
     end
@@ -157,7 +157,7 @@ module Laborantin::Commands
       execute do
         path = interpret_path(opts[:path])
         if path.empty?
-          puts "Cannot delete empty path, if you really want, remove #{runner.configfile_path}"
+          puts "Cannot delete empty path, if you really want, remove #{runner.config_path}"
         end
         node = path.pop
         tree = get_node(path)

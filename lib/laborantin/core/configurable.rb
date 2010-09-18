@@ -14,11 +14,10 @@ module Laborantin
 
       # restore the configuration from the config file
       def load_config!(path=config_path)
-        @config = if File.file?(path)
-                    YAML.load_file(path)
-                  else
-                    Hash.new
-                  end
+        if File.file?(path)
+          @config = YAML.load_file(path)
+        end
+        @config ||= {}
       end
 
       def config_path
