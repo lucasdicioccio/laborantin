@@ -25,6 +25,8 @@ autoload :Time, 'time'
 autoload :Logger, 'logger'
 autoload :FileUtils, 'fileutils'
 
+require 'laborantin/core/datable'
+
 module Laborantin
 
   # An Environment represents the surrounding of an experiment. Basically, it
@@ -37,6 +39,8 @@ module Laborantin
   # If you want to do that, you must know that Environment @@all class variable
   # holds a reference to every child class from Environment.
   class Environment
+    include Metaprog::Datable
+
     @@all = []
 
     # Populates loaded (i.e. put in @@all class variable when self.inherited 
@@ -125,11 +129,6 @@ module Laborantin
     # An attribute that holds the directory where the logfile and the scenarii results
     # are stored. Can be overridden (e.g. Environment.scan_resdir does that).
     attr_accessor :rundir
-
-    # A date that holds the creation of the instance, it is not meaningful 
-    # when an env was created by a call to Environment.scan_resdir.
-    # TODO better
-    attr_accessor :date
 
     # An array of loggers objects.
     attr_accessor :loggers
@@ -230,13 +229,6 @@ module Laborantin
     # The scenarii classes must be loaded before, else, some results might be ignored.
     def populate
       Laborantin::Scenario.scan_env(self)
-    end
-
-    # Format the date of the item as a string such that it is unique 
-    # (it has a granularity of 1second, so there can be collisions if 
-    # an execution lasts more than this duration. 
-    def date_str
-      date.strftime("%Y-%h-%d_%H-%M-%S")
     end
 
     private

@@ -27,6 +27,8 @@ require 'laborantin/core/parameter_hash'
 autoload :FileUtils, 'fileutils'
 autoload :YAML, 'yaml'
 
+require 'laborantin/core/datable'
+
 module Laborantin
 
   # A Scenario represents a measurement done in a given environment. Some of
@@ -41,6 +43,7 @@ module Laborantin
   # Like the Environment, all the subklasses will be stored in a @@all 
   # class variable for convenience purpose.
   class Scenario
+    include Metaprog::Datable
     @@all = []
 
     # Scans the env's envdir (should be an Environment) for scenarii results.
@@ -160,11 +163,6 @@ module Laborantin
     # The environment in which we run this scenario.
     attr_accessor :environment
 
-    # A date that holds the creation of the instance, it is not meaningful 
-    # when an env was created by a call to Environment.scan_resdir.
-    # TODO better
-    attr_accessor :date
-
     # An attribute that holds the directory where the config and the results
     # are stored. Can be overridden (e.g. Scenario.scan_env does that).
     attr_accessor :rundir
@@ -232,13 +230,6 @@ module Laborantin
         end
         log "Product #{name} done"
       end
-    end
-
-    # Format the date of the item as a string such that it is unique 
-    # (it has a granularity of 1second, so there can be collisions if 
-    # an execution lasts more than this duration. 
-    def date_str
-      date.strftime("%Y-%h-%d_%H-%M-%S")
     end
 
     # Returns the absolute path to a product file (see File.join) If brutname

@@ -31,6 +31,7 @@ spec = Gem::Specification.new do |s|
           'lib/laborantin/core/monkey_patches.rb',
           'lib/laborantin/core/analysis.rb',
           'lib/laborantin/core/command.rb',
+          'lib/laborantin/core/datable.rb',
           'lib/laborantin/runner.rb',
           'lib/laborantin/runner/commands/create.rb',
           'lib/laborantin/runner/commands/describe.rb',
