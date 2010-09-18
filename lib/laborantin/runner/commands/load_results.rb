@@ -30,6 +30,16 @@ module Laborantin
       describe "Plumbery command to load results."
       plumbery!
 
+      VERSIONS = ['0.0.20']
+
+      option(:version) do
+        describe "the Laborantin version's loader to use #{VERSIONS.inspect}"
+        short '-v'
+        long "--version=OPTIONAL"
+        type String
+        default Laborantin::VERSION
+      end
+
       option(:scenarii) do
         describe "comma separated list of scenarios to describe"
         short "-s"
@@ -81,12 +91,22 @@ module Laborantin
       end
 
       def keep_env?(e, classes)
-          (classes[:envs].find{|k| e.is_a? k}) and
-          ((opts[:successful_only] ? e.successful? : true) and
-           (opts[:failed_only] ? e.failed? : true))
+        (classes[:envs].find{|k| e.is_a? k}) and
+        ((opts[:successful_only] ? e.successful? : true) and
+         (opts[:failed_only] ? e.failed? : true))
       end
 
+
       execute do
+        sym = unless VERSIONS.include?(opts[:version])
+                :execute_latest
+              else
+                "execute_#{opts[:version]}"
+              end
+        send sym 
+      end
+
+      define_method(:"execute_0.0.20") do
         # Parameters parsing
         params = eval(opts[:parameters]) unless opts[:parameters].empty?
         params ||= {}
@@ -111,6 +131,8 @@ module Laborantin
 
         {:envs => envs, :scii => scii}
       end
+
+      alias :execute_latest :"execute_0.0.20"
     end
   end
 end
