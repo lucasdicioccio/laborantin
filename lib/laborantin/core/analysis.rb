@@ -23,24 +23,20 @@ Copyright (c) 2009, Lucas Di Cioccio
 
 autoload :ERB, 'erb'
 
+require 'laborantin/core/describable'
+
 module  Laborantin
   # An Analysis is a handy way to reload and filter the various scenarii that were
   # run. You can easily filter on them.
   class Analysis
-    class << self
-      # A description string.
-      attr_accessor :description
+    extend Metaprog::Describable
 
+    class << self
       # A hash with two items, this might change later but KISS for now.
       attr_accessor :selectors
 
       # An array
       attr_accessor :analyses
-
-      # Sets the description string of the analysis.
-      def describe(str)
-        @description = str
-      end
 
       # Add a selector to filter for the analysis only the runs that pass the selector.
       # * sym objects (sym currently must be :environments or 

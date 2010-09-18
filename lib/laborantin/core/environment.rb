@@ -26,6 +26,7 @@ autoload :Logger, 'logger'
 autoload :FileUtils, 'fileutils'
 
 require 'laborantin/core/datable'
+require 'laborantin/core/describable'
 
 module Laborantin
 
@@ -40,6 +41,7 @@ module Laborantin
   # holds a reference to every child class from Environment.
   class Environment
     include Metaprog::Datable
+    extend Metaprog::Describable
 
     @@all = []
 
@@ -91,11 +93,6 @@ module Laborantin
       # Registers new verifiers methods that will be verified at beginning.
       def verify(*args)
         self.verifications = [*args].flatten
-      end
-
-      # Sets the description.
-      def describe(str)
-        self.description = str
       end
 
       # Registers setup hooks, called before any scenario is instantiated.

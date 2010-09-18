@@ -28,6 +28,7 @@ autoload :FileUtils, 'fileutils'
 autoload :YAML, 'yaml'
 
 require 'laborantin/core/datable'
+require 'laborantin/core/describable'
 
 module Laborantin
 
@@ -44,6 +45,7 @@ module Laborantin
   # class variable for convenience purpose.
   class Scenario
     include Metaprog::Datable
+    extend Metaprog::Describable
     @@all = []
 
     # Scans the env's envdir (should be an Environment) for scenarii results.
@@ -71,12 +73,6 @@ module Laborantin
     end
 
     class << self
-
-      # A description used for printing summary and debug purposes. Will be 
-      # used to create .tex report in the future.
-      # CURRENTLY NOT HERITED
-      attr_accessor :description
-
       # A hash to store setup/teardown hooks.
       # CURRENTLY NOT HERITED
       attr_accessor :hooks
@@ -97,11 +93,6 @@ module Laborantin
         klass.products = []
         klass.hooks = {:setup => [], :teardown => []}
         @@all << klass
-      end
-
-      # Sets the description.
-      def describe(str)
-        self.description = str
       end
 
       # Registers setup hooks.
