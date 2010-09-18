@@ -47,9 +47,5 @@ module Laborantin
         idx += 1
       end
     end
-
-    def to_s
-      keys.inject(''){|s,k| s + "\t- #{k}: #{self[k]}.\n"}
-    end
   end
 end

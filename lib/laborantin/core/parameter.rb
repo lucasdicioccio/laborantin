@@ -55,8 +55,5 @@ module Laborantin
       end
     end
 
-    def to_s
-      "#{values.inspect}\n\t\t#{@description}"
-    end
   end
 end

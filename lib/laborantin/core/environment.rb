@@ -95,11 +95,6 @@ module Laborantin
         self.verifications = [*args].flatten
       end
 
-      # Output a string with name and description indented.
-      def to_s
-        "#{self.name}:\n\t#{self.description}"
-      end
-
       # Returns all the known subklasses of Environment.
       def all
         @@all
