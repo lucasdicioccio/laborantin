@@ -28,6 +28,7 @@ autoload :FileUtils, 'fileutils'
 require 'laborantin/core/datable'
 require 'laborantin/core/describable'
 require 'laborantin/core/hookable'
+require 'laborantin/core/configurable'
 
 module Laborantin
 
@@ -42,6 +43,7 @@ module Laborantin
   # holds a reference to every child class from Environment.
   class Environment
     include Metaprog::Datable
+    include Metaprog::Configurable
     extend Metaprog::Describable
     extend Metaprog::Hookable
 
@@ -112,9 +114,6 @@ module Laborantin
     # An array of loggers objects.
     attr_accessor :loggers
 
-    # A hash placeholder for extra config (e.g. git revision for the git implementation)
-    attr_accessor :config
-
     # Initializes a new instance:
     # the date is Time.now
     # the rundir is the Environment.envdir followed by the date_str
@@ -139,20 +138,18 @@ module Laborantin
     end
 
     # complete path to the config.yaml file
-    def configfile_path
+    def config_path
       File.join(rundir, 'config.yaml')
     end
 
-    # saves the @config in a YAML configfile
-    def save_config
-      File.open(configfile_path, 'w') do |f|
-        f.puts YAML.dump(config)
-      end
+    def scenarii_dirs
+      config[:scenarii_dirs]
     end
 
-    # restore the configuration from the configfile
-    def load_config!
-      @config = YAML.load_file(configfile_path)
+    def record_scenario_dir(dir, save=false)
+      config[:scenarii_dirs] ||= []
+      config[:scenarii_dirs] << dir
+      save_config if save
     end
 
     # gets the state of the environment

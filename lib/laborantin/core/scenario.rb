@@ -30,6 +30,7 @@ autoload :YAML, 'yaml'
 require 'laborantin/core/datable'
 require 'laborantin/core/describable'
 require 'laborantin/core/hookable'
+require 'laborantin/core/configurable'
 
 module Laborantin
 
@@ -46,6 +47,7 @@ module Laborantin
   # class variable for convenience purpose.
   class Scenario
     include Metaprog::Datable
+    include Metaprog::Configurable
     extend Metaprog::Describable
     extend Metaprog::Hookable
     @@all = []
@@ -64,7 +66,7 @@ module Laborantin
               scenar = scklass.new(env)
               scs << scenar
               scenar.rundir = File.join(scklass.scenardir(env), r)
-              tst, params = YAML.load_file(File.join(scenar.rundir, 'config.yaml'))
+              tst, params = scenar.load_config!
               scenar.params = params
               scenar.date = tst
             end
@@ -155,6 +157,7 @@ module Laborantin
       @environment = env
       @params = params
       @date = Time.now
+      @config = {}
       @rundir = File.join(self.class.scenardir(environment), date_str)
     end
 
@@ -170,8 +173,10 @@ module Laborantin
       log self.params.inspect, :info
       log "Preparing directory #{rundir}"
       FileUtils.mkdir_p(rundir)  #TODO: ensure unicity
+      environment.record_scenario_dir(rundir, true)
       log "Storing configuration in YAML format"
-      File.open( config_path, 'w') {|f| f.puts YAML.dump( [date, params] ) }
+      @config = [date, params]
+      save_config
     end
 
     # In the following order:
