@@ -44,39 +44,39 @@ Working with Laborantin is not straightforward, but it's not too much of a pain 
 ==== help
 Simply shows a list of available commands, if an argument is passed, details the command.
 
-ex.1 [$ labor help ]
-ex.2 [$ labor help create ]
+- <tt>labor help</tt>
+- <tt>labor create --help</tt>
 
 ==== create
 Initializes a workbench with the correct directory structure. You can directly create empty stub files for environments and scenarii if you know what you will do.
 
-ex. [$ labor create workbench --envs=foo1,foo2 -s bar1]
+- <tt>labor create workbench [--envs=foo1,foo2] [-s bar1]</tt>
 
 ==== describe
 Describes a workbench Environments and Scenarii, that's why it's important to fill the descriptions.
 
-ex. [$ labor describe]
+- <tt>labor describe</tt>
 
 ==== run
 Runs matching -e Environments and -s Scenarii experiments, with parameters given in -p.
 
-ex. [$ labor run -e foo -p "{:bar => [1,2,3]}"]
+- <tt>labor run [-e foo] [-p "{:bar => [1,2,3]}"] [-s bar1]</tt>
 
 ==== scan
 Scans the result directory and counts, for each Scenario and Environment class, the number of performed instances.
 
-ex. [$ labor scan]
+- <tt>labor scan</tt>
 
 ==== find
 Finds in the result dir the performed instances, and prints their name.
 
-ex. [$ labor find -p "{:foo => [1,2,3]}"]
+- <tt>labor find [-p "{:foo => [1,2,3]}"]</tt>
 
 ==== replay
 Re-runs, by calling all products of each matching Environments and Scenarii. If -m option is given, will simply send the methods instead of reproducing all results. You should ensure that the methods / products work fine with "data in the databases", you might want to load previously dumped data.
 
-ex. [$ labor run -s foo,bar -p "{:baz => [1,2,3]}"]
-ex. [$ labor run -m meth1,meth2]
+- <tt>labor replay [-s foo,bar] [-p "{:baz => [1,2,3]}"]</tt>
+- <tt>labor replay [-m meth1,meth2]</tt>
 
 == Hints
 
