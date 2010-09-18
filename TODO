@@ -1,3 +1,13 @@
+new data structure:
+  in config files (both env and scenarii):
+    reference every rundir
+    reference the class type
+    reference the success/failure status (not in scenarii for now)
+    reference the date (not in env for now, badly done for scenarii)
+  reference the laborantin version somewhere
+  relax 1sec constraint for uniqueness with an ID field instead
+  make such that load / save methods pass through an adapter (database)
+  migrate command that will take a legacy dir and make a new one from it by loading the old way; fixing the data model; saving in the new way
 commands:
 	report 
 	publish
@@ -7,8 +17,5 @@ config dir:
 general:
 	move runner into core
 	move runner/commands in another directory (e.g. /commands or /base/commands or /core/commands)
-	status error of scenarii
 	roles
 	better git/other SCM integration
-	database integration
-	datamining integration
