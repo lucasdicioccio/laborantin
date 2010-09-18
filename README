@@ -53,42 +53,43 @@ Working with Laborantin is not straightforward, but it's not too much of a pain 
 ==== help
 Simply shows a list of available commands, if an argument is passed, details the command.
 
-ex.1 [$ labor help]
-ex.2 [$ labor help create]
+- <tt>labor help</tt>
+- <tt>labor create --help</tt>
 
 ==== create
 Initializes a workbench with the correct directory structure. You can directly create empty stub files for environments and scenarii if you know what you will do.
 
-ex. [$ labor create workbench --envs=foo1,foo2 -s bar1]
+- <tt>labor create workbench [--envs=foo1,foo2] [-s bar1]</tt>
 
 ==== describe
 Describes a workbench Environments and Scenarii, that's why it's important to fill the descriptions.
 
-ex. [$ labor describe]
+- <tt>labor describe</tt>
 
 ==== run
 Runs matching -e Environments and -s Scenarii experiments, with parameters given in -p. With the -c flag, you can set it to skip experiments which already have a successful record in the database.
 
-ex. [$ labor run -e foo -p "{:bar => [1,2,3]}"]
+- <tt>labor run [-e foo] [-p "{:bar => [1,2,3]}"] [-s bar1]</tt>
 
 ==== scan
 Scans the result directory and counts, for each Scenario and Environment class, the number of performed instances.
 
-ex. [$ labor scan]
+- <tt>labor scan</tt>
 
 ==== find
 Finds in the result dir the performed instances, and prints their name. The --successful or --failed flags allow you to display only the experiments that went right.
 
-ex. [$ labor find -p "{:foo => [1,2,3]}"]
+- <tt>labor find [-p "{:foo => [1,2,3]}"]</tt>
 
 ==== replay
 Produces the scenario's product for scenarios that matching the -e, -s, and -p options (like in the run command).
 
-ex. [$ labor run -s foo,bar -p "{:baz => [1,2,3]}"]
-ex. [$ labor run -m meth1,meth2]
+- <tt>labor replay [-s foo,bar] [-p "{:baz => [1,2,3]}"]</tt>
+- <tt>labor replay [-m meth1,meth2]</tt>
 
 ==== analyze
 Analyses the result to produce what you want (e.g., a plot). The -a option allows you to select only a subset of the analyses.
+- <tt>labor analyze [-a foo,bar]</tt>
 
 ==== rm
 Removes the result from the database, the syntax is very similar to labor find. Simply: what would be printed on the screen with the find command will be destroyed. 
@@ -104,27 +105,27 @@ Currently unused, will serve later.
 ==== Ideal world
 The following list lacks many details, hopefully I'll find time to write more doc.
 
-* create a project directory with [$ labor create <name>].
+* create a project directory with <tt>labor create <name></tt>.
 * cd <name>
 * edit ./environments/<env>
-* edit ./scenarii/<scenario> (NB: the "run method must take at least 1sec., sleep if necessary"
-* verify that things seems correct with [$labor describe]
-* run things with [$ labor run]   (and wait a bit)
-* ensure that we have the results we need with [$ labor scan]
-* produces per-scenario intermediary results with [$ labor replay]
+* edit ./scenarii/<scenario> (NB: the "run method in your scenarios must take at least 1sec., sleep if necessary")
+* verify that things seems correct with <tt>labor describe</tt>
+* run things with <tt>labor run</tt>   (and wait a bit)
+* ensure that we have the results we need with <tt>labor scan</tt>
+* produces per-scenario intermediary results with <tt>labor replay</tt>
 * edit ./analyses/<analysis>
-* analyse your results with [$ labor analyze]
+* analyse your results with <tt>labor analyze</tt>
 
-Moreover, at any point, you can take notes with [$ labor note "some note"].
+Moreover, at any point, you can take notes with <tt>labor note "some note"</tt>.
 
 ==== Real (cursed) world
 Often, experiments crash. Sometimes, you are bothered by the presence of an old result which forces you to add filter to the command line. 
 
 Since last version, Laborantin provides support to handle these cases:
 
-Let's say you had a crash during a run of 1000 experiments. [$labor scan] will show that you only completed 200 of them. The thing is that you have a lot of parameters, and little time to figure-out which combinations of parameters are missing. Your Laborantin will do that for you, just re-run the same command that crashed (after fixing the source of the bug), and append it the -c option, and it will re-run only what crashed or is missing.
+Let's say you had a crash during a run of 1000 experiments. <tt>labor scan</tt> will show that you only completed 200 of them. The thing is that you have a lot of parameters, and little time to figure-out which combinations of parameters are missing. Your Laborantin will do that for you, just re-run the same command that crashed (after fixing the source of the bug), and append it the -c option, and it will re-run only what crashed or is missing.
 
-Then if you're not interested in the failed results, you can use [$labor rm --failed].
+Then if you're not interested in the failed results, you can use <tt>labor rm --failed</tt>.
 
 == Hints
 
