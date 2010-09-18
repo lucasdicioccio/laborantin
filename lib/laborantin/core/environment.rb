@@ -73,11 +73,6 @@ module Laborantin
       # CURRENTLY NOT HERITED
       attr_accessor :verifications
 
-      # A description used for printing summary and debug purposes. Will be 
-      # used to create .tex report in the future.
-      # CURRENTLY NOT HERITED
-      attr_accessor :description
-
       # A hash to store setup/teardown hooks.
       # CURRENTLY NOT HERITED
       attr_accessor :hooks
