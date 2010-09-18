@@ -57,23 +57,28 @@ module Laborantin
     # according to the stored config.yaml in YAML format.  Returns an array of
     # such built scenarii.
     def self.scan_env(env)
-      scs = []
+      list = []
       Dir.entries(env.rundir).each do |s|
         scklass = Laborantin::Scenario.all.find{|t| t.name.duck_case == s}
         if scklass
           Dir.entries(scklass.scenardir(env)).each do |r|
             if r =~ /\d+-\w+-\d+_\d+-\d+-\d+/
-              scenar = scklass.new(env)
-              scs << scenar
-              scenar.rundir = File.join(scklass.scenardir(env), r)
-              tst, params = scenar.load_config!
-              scenar.params = params
-              scenar.date = tst
+              scenar = scklass.new_loading_from_dir(env, File.join(scklass.scenardir(env), r))
+              list << scenar
             end
           end
         end
       end
-      scs
+      list
+    end
+
+    def self.new_loading_from_dir(env, path)
+      obj = self.new(env)
+      tst, params = obj.load_config!
+      obj.params = params
+      obj.date = tst
+      obj.rundir = path
+      obj
     end
 
     class << self

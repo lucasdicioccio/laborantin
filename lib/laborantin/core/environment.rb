@@ -53,21 +53,26 @@ module Laborantin
     # is called) environment classes from existing results that are stored in
     # the dir parameter.
     def self.scan_resdir(dir)
-      ret = []
+      list = []
       Dir.entries(dir).each do |f| 
         envklass = Laborantin::Environment.all.find{|e| e.name.duck_case == f} 
         if envklass
           Dir.entries(envklass.envdir).each do |e|
             if e =~ /\d+-\w+-\d+_\d+-\d+-\d+/
-              env = envklass.new #XXX don't prepare! it hence don't overwrite logs
-              env.rundir = File.join(envklass.envdir, e)
-              env.load_config!
-              ret << env
+              env = envklass.new_loading_from_dir(File.join(envklass.envdir, e))
+              list << env
             end
           end
         end
       end
-      ret
+      list
+    end
+
+    def self.new_loading_from_dir(path)
+      obj = self.new
+      obj.load_config!
+      obj.rundir = path
+      obj
     end
 
     class << self
