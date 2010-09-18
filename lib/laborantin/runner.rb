@@ -234,10 +234,14 @@ module Laborantin
           argv.shift()
         end
 
-        args, opts = parse_opts(argv, cmd_klass)
-
-        cmd = cmd_klass.new(self)
-        cmd.run(args, opts)
+        begin
+          args, opts = parse_opts(argv, cmd_klass)
+          cmd = cmd_klass.new(self)
+          cmd.run(args, opts)
+        rescue OptionParser::InvalidOption => err
+          puts err.message
+          puts "use 'labor #{argv_klass_name(cmd_klass)} --help' for help"
+        end
       else
         print_generic_help
       end
