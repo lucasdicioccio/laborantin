@@ -134,12 +134,6 @@ module Laborantin
         self.products = [*args].flatten
       end
 
-      # Returns a string of name followed by the indented description and the
-      # parameters.
-      def to_s
-        "#{self.name}:\n\t#{self.description}\n#{self.parameters}"
-      end
-
       # Returns all the known subklasses of Scenario.
       def all
         @@all

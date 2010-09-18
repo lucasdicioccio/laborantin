@@ -39,9 +39,5 @@ module Laborantin
         yield cfg
       end
     end
-
-    def to_s
-      keys.inject(''){|s,k| s + "\t- #{k}: #{self[k]}.\n"}
-    end
   end
 end

@@ -59,9 +59,5 @@ module Laborantin
     def describe(str)
       @description = str
     end
-
-    def to_s
-      "#{values.inspect}\n\t\t#{@description}"
-    end
   end
 end
