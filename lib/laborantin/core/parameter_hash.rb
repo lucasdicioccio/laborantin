@@ -40,6 +40,14 @@ module Laborantin
       end
     end
 
+    def each_config_with_index
+      idx = 0
+      each_config do |cfg|
+        yield cfg, idx
+        idx += 1
+      end
+    end
+
     def to_s
       keys.inject(''){|s,k| s + "\t- #{k}: #{self[k]}.\n"}
     end
