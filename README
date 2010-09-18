@@ -1,5 +1,148 @@
-Laborantin is a measurement batch facilitator.
-When you need to perform a lot of measurements varying some parameters, Laborantin helps you to stay organized.
-It provides an abstraction of environments and scenarii, vary all possible parameters and store everything in directories.
+= Laborantin (cheaper than an intern!)
 
-Next, it will ease the reprocessing of measurements, synchronization to send reports to a backup server, and maybe provide some coordination with distant nodes.
+
+== Purpose
+
+Laborantin is a framework intended to help people that performs a lot of experiments that can be scripted (e.g., scientists).
+It has two main abstractions: Environment and Scenario.
+* Environment: represents what cannot be changed easily, like the version of an operating system, or an hardware component.
+* Scenario: represents an experiment, with parameters that you will vary to study their impact.
+
+Laborantin ships with an executable script that allows you to perform recurring tasks like running, finding experiments with filtering on parameters sets.
+The experiments reports are stored in a directory structure such that you don't have to bother about where to store which paramters.
+Environments and Scenarios are also accessible as regular libraries (unless you don't want to use Ruby at all), such that you can use all the stored data without too much efforts.
+
+=== Benefits
+
+Laborantin enables you to focus on your experiments and not on the silly issues that come with scientific rigor, like logging what happened, organizing your scripts, or writing an argument parser for the N-th time.
+
+=== Current Features
+
+* library with
+  * handy logging
+  * hook points before/after experiments
+  * easy selection of experiments for post-analysis 
+* command line interface
+  * to run, retrieve, destroy, analyze experiments
+  * easily extendable (e.g. for HTML reporting)
+
+=== Next Improvements
+
+* verify that we're actually in a laborantin directory
+* run identifier
+* per-scenario logfile
+* inherit from parameters, products and hooks
+* better analysis meta-data for automated reporting
+* better Git integration
+* better use of the configurations
+
+=== Future
+
+The future of Laborantin mainly depends on you, what are your needs? can you patch it?
+We envision four main branches for the future of Laborantin:
+* *Develop* a way for everyone to define its prefered directory structure, especially heretics that do not want to use Ruby and Laborantin's libraries to read the experiments reports.
+* *Develop* roles in experiments having each Laborantin be a cooperating agent (maybe a P2P one).
+
+Also, Laborantin was written super quickly, and there certainly is room for a lot of code and design improvements, feel free to participate (see contacts below).
+== Workflow
+
+Working with Laborantin is not straightforward, but it's not too much of a pain neither. You can follow the tutorial (http://dicioccio.fr/laborantin) if you want the short overview on how to use it.
+
+=== The labor script commands
+
+==== help
+Simply shows a list of available commands, if an argument is passed, details the command.
+
+ex.1 [$ labor help]
+ex.2 [$ labor help create]
+
+==== create
+Initializes a workbench with the correct directory structure. You can directly create empty stub files for environments and scenarii if you know what you will do.
+
+ex. [$ labor create workbench --envs=foo1,foo2 -s bar1]
+
+==== describe
+Describes a workbench Environments and Scenarii, that's why it's important to fill the descriptions.
+
+ex. [$ labor describe]
+
+==== run
+Runs matching -e Environments and -s Scenarii experiments, with parameters given in -p. With the -c flag, you can set it to skip experiments which already have a successful record in the database.
+
+ex. [$ labor run -e foo -p "{:bar => [1,2,3]}"]
+
+==== scan
+Scans the result directory and counts, for each Scenario and Environment class, the number of performed instances.
+
+ex. [$ labor scan]
+
+==== find
+Finds in the result dir the performed instances, and prints their name. The --successful or --failed flags allow you to display only the experiments that went right.
+
+ex. [$ labor find -p "{:foo => [1,2,3]}"]
+
+==== replay
+Produces the scenario's product for scenarios that matching the -e, -s, and -p options (like in the run command).
+
+ex. [$ labor run -s foo,bar -p "{:baz => [1,2,3]}"]
+ex. [$ labor run -m meth1,meth2]
+
+==== analyze
+Analyses the result to produce what you want (e.g., a plot). The -a option allows you to select only a subset of the analyses.
+
+==== rm
+Removes the result from the database, the syntax is very similar to labor find. Simply: what would be printed on the screen with the find command will be destroyed. 
+
+==== note
+Adds a record to the BOOKNOTE file, its only purpose is for you to keep track of oddities, bugs, or ideas during the long process of doing experimentations.
+
+==== config set|get|del
+Currently unused, will serve later.
+
+=== Typical workflow
+
+==== Ideal world
+The following list lacks many details, hopefully I'll find time to write more doc.
+
+* create a project directory with [$ labor create <name>].
+* cd <name>
+* edit ./environments/<env>
+* edit ./scenarii/<scenario> (NB: the "run method must take at least 1sec., sleep if necessary"
+* verify that things seems correct with [$labor describe]
+* run things with [$ labor run]   (and wait a bit)
+* ensure that we have the results we need with [$ labor scan]
+* produces per-scenario intermediary results with [$ labor replay]
+* edit ./analyses/<analysis>
+* analyse your results with [$ labor analyze]
+
+Moreover, at any point, you can take notes with [$ labor note "some note"].
+
+==== Real (cursed) world
+Often, experiments crash. Sometimes, you are bothered by the presence of an old result which forces you to add filter to the command line. 
+
+Since last version, Laborantin provides support to handle these cases:
+
+Let's say you had a crash during a run of 1000 experiments. [$labor scan] will show that you only completed 200 of them. The thing is that you have a lot of parameters, and little time to figure-out which combinations of parameters are missing. Your Laborantin will do that for you, just re-run the same command that crashed (after fixing the source of the bug), and append it the -c option, and it will re-run only what crashed or is missing.
+
+Then if you're not interested in the failed results, you can use [$labor rm --failed].
+
+== Hints
+
+=== Super classes ?
+You can benefit from object orientation of Scenarii both in Environment and Scenarii, just make sure you don't run them (for Environment, set a dummy verification which is always false).
+
+Unfortunately, subclasses of Environment or Scenario do not automatically inheritates from parent's parameter/products/setup/teardown information.
+
+=== Environment or Scenario ?
+Sometimes it is hard to know what should go inside the code of the Environment and what should go inside the code of the Scenario. Indeed, you can compare two environments like you would compare two scenariis. There is no rule that fits all purposes, but I suggest that what can be changed easily should go to the environment. Also, all code which is related to sending commands to distant computers fit well in environments. Meanwhile, the content of the command is build inside the scenario.
+
+=== Parameter or not ?
+The same kind of ambivalence exists between Parameters and Scenarii. Sometimes the design of the same scenario with a different parameter makes more sense with a subclass (when you start having a lot of  `if params[:foo] == :bar'. It's up to you to decide afterwards, how you'll be filtering on results and perform your analysis.
+
+== Contributors / Contacts
+
+* Lucas Di Cioccio (http://dicioccio.fr)
+
+== Licence
+This library and tools are licensed under the GPL version 3 (http://www.gnu.org/licenses).
+
