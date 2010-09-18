@@ -29,6 +29,7 @@ autoload :YAML, 'yaml'
 
 require 'laborantin/core/datable'
 require 'laborantin/core/describable'
+require 'laborantin/core/hookable'
 
 module Laborantin
 
@@ -46,6 +47,7 @@ module Laborantin
   class Scenario
     include Metaprog::Datable
     extend Metaprog::Describable
+    extend Metaprog::Hookable
     @@all = []
 
     # Scans the env's envdir (should be an Environment) for scenarii results.
@@ -73,10 +75,6 @@ module Laborantin
     end
 
     class << self
-      # A hash to store setup/teardown hooks.
-      # CURRENTLY NOT HERITED
-      attr_accessor :hooks
-
       # The set of parameters that will vary for this Scenario.
       attr_accessor :parameters
 
@@ -93,16 +91,6 @@ module Laborantin
         klass.products = []
         klass.hooks = {:setup => [], :teardown => []}
         @@all << klass
-      end
-
-      # Registers setup hooks.
-      def setup(*args)
-        self.hooks[:setup] = [*args].flatten
-      end
-
-      # Register teardown hooks.
-      def teardown(*args)
-        self.hooks[:teardown] = [*args].flatten
       end
 
       # Defines a new ParameterRange instance for this Scenario.

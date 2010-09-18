@@ -27,6 +27,7 @@ autoload :FileUtils, 'fileutils'
 
 require 'laborantin/core/datable'
 require 'laborantin/core/describable'
+require 'laborantin/core/hookable'
 
 module Laborantin
 
@@ -42,6 +43,7 @@ module Laborantin
   class Environment
     include Metaprog::Datable
     extend Metaprog::Describable
+    extend Metaprog::Hookable
 
     @@all = []
 
@@ -73,10 +75,6 @@ module Laborantin
       # CURRENTLY NOT HERITED
       attr_accessor :verifications
 
-      # A hash to store setup/teardown hooks.
-      # CURRENTLY NOT HERITED
-      attr_accessor :hooks
-
       # Prepares attributes' default values whenever a subclass is created.
       def inherited(klass)
         klass.verifications = []
@@ -88,17 +86,6 @@ module Laborantin
       # Registers new verifiers methods that will be verified at beginning.
       def verify(*args)
         self.verifications = [*args].flatten
-      end
-
-      # Registers setup hooks, called before any scenario is instantiated.
-      def setup(*args)
-        self.hooks[:setup] = [*args].flatten
-      end
-
-      # Registers teardown hooks, called after every scenarii has been 
-      # performed and analyzed.
-      def teardown(*args)
-        self.hooks[:teardown] = [*args].flatten
       end
 
       # Output a string with name and description indented.
