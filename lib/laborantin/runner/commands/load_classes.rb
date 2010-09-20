@@ -51,15 +51,21 @@ module Laborantin
         envklasses = if opts[:environments].empty?
                        Laborantin::Environment.all
                      else
-                       opts[:environments].map!{|e| e.camelize}
-                       Laborantin::Environment.all.select{|e| opts[:environments].include? e.name}
+                       Laborantin::Environment.all.select do |e| 
+                         opts[:environments].find do |cli_name| 
+                           cli_name == e.cli_name
+                         end
+                       end
                      end
 
         sciiklasses = if opts[:scenarii].empty?
                         Laborantin::Scenario.all
                       else
-                        opts[:scenarii].map!{|e| e.camelize}
-                        Laborantin::Scenario.all.select{|e| opts[:scenarii].include? e.name}
+                        Laborantin::Scenario.all.select do |sc|
+                          opts[:scenarii].find do |cli_name|
+                            cli_name == sc.cli_name
+                          end
+                        end
                       end
 
         {:envs => envklasses, :scii => sciiklasses}

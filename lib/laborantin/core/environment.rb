@@ -29,6 +29,7 @@ require 'laborantin/core/datable'
 require 'laborantin/core/describable'
 require 'laborantin/core/hookable'
 require 'laborantin/core/configurable'
+require 'laborantin/core/multi_name'
 
 module Laborantin
 
@@ -46,6 +47,7 @@ module Laborantin
     include Metaprog::Configurable
     extend Metaprog::Describable
     extend Metaprog::Hookable
+    extend Metaprog::MultiName
 
     @@all = []
 
@@ -55,7 +57,7 @@ module Laborantin
     def self.scan_resdir(dir)
       list = []
       Dir.entries(dir).each do |f| 
-        envklass = Laborantin::Environment.all.find{|e| e.name.duck_case == f} 
+        envklass = Laborantin::Environment.all.find{|e| e.fs_name == f} 
         if envklass
           Dir.entries(envklass.envdir).each do |e|
             if e =~ /\d+-\w+-\d+_\d+-\d+-\d+/
@@ -103,7 +105,7 @@ module Laborantin
       # The path where the results for instance of a subklass of Environment
       # are stored (needs the Runner's resultdir).
       def envdir
-        File.join(Runner.instance.resultdir, self.name.duck_case)
+        File.join(Runner.instance.resultdir, self.fs_name)
       end
     end
 

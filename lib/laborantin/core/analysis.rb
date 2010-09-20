@@ -24,12 +24,14 @@ Copyright (c) 2009, Lucas Di Cioccio
 autoload :ERB, 'erb'
 
 require 'laborantin/core/describable'
+require 'laborantin/core/multi_name'
 
 module  Laborantin
   # An Analysis is a handy way to reload and filter the various scenarii that were
   # run. You can easily filter on them.
   class Analysis
     extend Metaprog::Describable
+    extend Metaprog::MultiName
 
     class << self
       # A hash with two items, this might change later but KISS for now.

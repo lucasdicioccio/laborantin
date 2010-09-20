@@ -58,10 +58,10 @@ module Laborantin
         puts "Laborantin's summary:"
         Laborantin::Environment.all.each do |envklass|
           env_tot = results[:envs].select{|e| e.is_a? envklass}.size #XXX instead of .count
-          puts "#{envklass.name.duck_case} => #{env_tot}"
+          puts "#{envklass.cli_name} => #{env_tot}"
           Laborantin::Scenario.all.each do |scklass|
 	    sc_tot = results[:scii].select{|s| s.is_a? scklass and s.environment.is_a? envklass}.size #see above
-            puts "\t#{scklass.name.duck_case} => #{sc_tot}"
+            puts "\t#{scklass.cli_name} => #{sc_tot}"
           end
         end
 

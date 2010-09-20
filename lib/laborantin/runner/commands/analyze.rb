@@ -38,8 +38,11 @@ module Laborantin
         anae = if opts[:analyses].empty?
                  Analysis.all
                else
-                 opts[:analyses].map!{|e| e.camelize}
-                 Analysis.all.select{|e| opts[:analyses].include? e.name}
+                 Analysis.all.select do |e| 
+                   opts[:analyses].find do |cli_name|
+                      cli_name == e.cli_name
+                   end
+                 end
                end
 
         anae.each do |klass|

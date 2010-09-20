@@ -35,6 +35,7 @@ spec = Gem::Specification.new do |s|
           'lib/laborantin/core/describable.rb',
           'lib/laborantin/core/hookable.rb',
           'lib/laborantin/core/configurable.rb',
+          'lib/laborantin/core/multi_name.rb',
           'lib/laborantin/runner.rb',
           'lib/laborantin/runner/commands/create.rb',
           'lib/laborantin/runner/commands/describe.rb',

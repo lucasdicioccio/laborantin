@@ -181,10 +181,6 @@ ERB
         ERB.new(TXT_TPL).result(binding).lines.reject{|l| l =~/^\s*$/}.join
       end
 
-      def show?(klass, sym)
-        opts[sym].empty? or opts[sym].include?(klass.name.duck_case)
-      end
-
       alias :default_format :txt_format
 
       def format_str

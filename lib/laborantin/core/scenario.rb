@@ -31,6 +31,7 @@ require 'laborantin/core/datable'
 require 'laborantin/core/describable'
 require 'laborantin/core/hookable'
 require 'laborantin/core/configurable'
+require 'laborantin/core/multi_name'
 
 module Laborantin
 
@@ -50,6 +51,8 @@ module Laborantin
     include Metaprog::Configurable
     extend Metaprog::Describable
     extend Metaprog::Hookable
+    extend Metaprog::MultiName
+
     @@all = []
 
     # Scans the env's envdir (should be an Environment) for scenarii results.
@@ -59,7 +62,7 @@ module Laborantin
     def self.scan_env(env)
       list = []
       Dir.entries(env.rundir).each do |s|
-        scklass = Laborantin::Scenario.all.find{|t| t.name.duck_case == s}
+        scklass = Laborantin::Scenario.all.find{|t| t.fs_name == s}
         if scklass
           Dir.entries(scklass.scenardir(env)).each do |r|
             if r =~ /\d+-\w+-\d+_\d+-\d+-\d+/
@@ -133,7 +136,7 @@ module Laborantin
       # will use '.' as rootdir for the Scenario results.
       def scenardir(env=nil)
         envdir = env.rundir || '.'
-        File.join(envdir, self.name.duck_case)
+        File.join(envdir, self.fs_name)
       end
     end # class << 
 
