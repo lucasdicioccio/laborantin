@@ -11,11 +11,11 @@ new data structure:
 commands:
 	report 
 	publish
+  migrate
 config dir:
 	extra libraries to require
-	publication configuration
 general:
-	move runner into core
+	move runner into core/ and cli_runner into base/
 	move runner/commands in another directory (e.g. /commands or /base/commands or /core/commands)
-	roles
-	better git/other SCM integration
+	roles for multi-machines
+  git integration
