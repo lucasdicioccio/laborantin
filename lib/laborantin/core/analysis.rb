@@ -182,5 +182,23 @@ module  Laborantin
       end
     end
 
+    # The list of parameters spanned from the scenarii.
+    # e.g. scenario 1, params = A => a1, B => b1
+    #      scenario 2, params = A => a2, B => b2
+    #      scenario 3, params = C => c3
+    #      parameters = A => [a1, a2], B => [b1, b2], C => [c3]
+    def parameters
+      unless @parameters
+        @parameters = {}
+        each_scenario do |sc|
+          sc.params.each_pair do |name, value|
+            @parameters[name] ||= []
+            @parameters[name] << value unless @parameters[name].include?(value)
+          end
+        end
+      end
+      @parameters
+    end
+
   end
 end
