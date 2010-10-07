@@ -209,13 +209,12 @@ module Laborantin
     # Appends each yielded line from this method.
     def analyze!
       self.class.products.each do |name|
-        log "Producing #{name}"
+        log "(#{name})"
         product_file(name.to_s, 'w') do |f|
           send(name) do |l|
             f.puts l
           end
         end
-        log "Product #{name} done"
       end
     end
 

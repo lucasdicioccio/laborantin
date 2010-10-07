@@ -105,7 +105,7 @@ module  Laborantin
     # TODO : recode this, maybe as nothing to do here
     def analyze 
       self.class.analyses.each do |a|
-        puts "analyzing #{a[:str]}"
+        puts "(#{a[:str]})"
         instance_eval &a[:blk]
         puts "done"
       end
