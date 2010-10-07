@@ -213,7 +213,10 @@ module Laborantin
 
     def call_hooks(name)
       log "Calling #{name} hooks"
-      self.class.hooks[name].each{|sym| send sym}
+      self.class.hooks[name].each do |sym| 
+        log "(#{sym})" 
+        send sym
+      end
     end
 
   end # class

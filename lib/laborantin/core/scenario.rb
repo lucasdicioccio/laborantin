@@ -77,7 +77,8 @@ module Laborantin
 
     def self.new_loading_from_dir(env, path)
       obj = self.new(env)
-      tst, params = obj.load_config!
+      yml_path = File.join(path, 'config.yaml')
+      tst, params = obj.load_config!(yml_path)
       obj.params = params
       obj.date = tst
       obj.rundir = path
@@ -265,7 +266,10 @@ module Laborantin
 
     def call_hooks(name)
       log "Calling #{name} hooks"
-      self.class.hooks[name].each{|sym| send sym}
+      self.class.hooks[name].each do |sym| 
+        log "(#{sym})" 
+        send sym
+      end
     end
 
     def log(*args)
