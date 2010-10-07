@@ -119,10 +119,15 @@ module Laborantin
         envs = Laborantin::Environment.scan_resdir('results').select do |e| 
           keep_env?(e, classes)
         end
-        all_scii = envs.map{|env| env.populate }.flatten.select{|sc| classes[:scii].find{|k| sc.is_a? k}}
 
-        # Filtering the scenarii
-        scii = all_scii.select do |sc|
+        all_scii = envs.map{|env| env.populate }.flatten #loads everything in envs
+
+        all_selected_scii = all_scii.select do |sc|  #keep only klasses we want
+          classes[:scii].find{|k| sc.is_a? k}
+        end
+
+        # Filtering the scenarii according to parameters
+        scii = all_selected_scii.select do |sc|
           filter_out = params.keys.find do |k| 
             not params[k].include?(sc.params[k])
           end
