@@ -12,10 +12,13 @@ commands:
 	report 
 	publish
   migrate
+  optimize
+  estimate (cost, duration, 
+    whatever defined by the user, only total sum, products?)
 config dir:
 	extra libraries to require
 general:
 	move runner into core/ and cli_runner into base/
 	move runner/commands in another directory (e.g. /commands or /base/commands or /core/commands)
 	roles for multi-machines
-  git integration
+  git integration (from create to everything)
