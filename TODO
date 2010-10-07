@@ -11,8 +11,10 @@ new data structure:
 commands:
 	report 
 	publish
-  migrate
-  optimize
+  migrate (from version to version, and dir structure to dir structure)
+  check (a sort of run but that you can abbreviate, 
+    and that writes in a tempdir)
+  optimize (given a goal)
   estimate (cost, duration, 
     whatever defined by the user, only total sum, products?)
 config dir:
