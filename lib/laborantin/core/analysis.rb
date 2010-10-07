@@ -192,7 +192,7 @@ module  Laborantin
         @parameters = {}
         each_scenario do |sc|
           sc.params.each_pair do |name, value|
-            @parameters[name] ||= []
+            @parameters[name] ||= []
             @parameters[name] << value unless @parameters[name].include?(value)
           end
         end
