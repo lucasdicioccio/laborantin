@@ -34,6 +34,9 @@ module Laborantin
         long "--scenarii=OPTIONAL"
         type Array
         default []
+        complete do |cmd|
+          completion_propositions_iterating_on(cmd, Laborantin::Scenario.all.map(&:cli_name))
+        end
       end
 
       option(:environments) do
@@ -42,6 +45,9 @@ module Laborantin
         long "--envs=OPTIONAL"
         type Array
         default []
+        complete do |cmd|
+          completion_propositions_iterating_on(cmd, Laborantin::Environment.all.map(&:cli_name))
+        end
       end
 
       option(:analyses) do
@@ -50,6 +56,9 @@ module Laborantin
         long "--analyses=OPTIONAL"
         type Array
         default []
+        complete do |cmd|
+          completion_propositions_iterating_on(cmd, Laborantin::Analysis.all.map(&:cli_name))
+        end
       end
 
       option(:output) do
@@ -122,8 +131,10 @@ module Laborantin
       <ul>
       <% sc.parameters.each_pair do |name, spec| %>
         <li><%= name %></li>
-        <li><%= spec.description %></li>
-        <li><%= spec.values.inspect %></li>
+        <ul>
+          <li><%= spec.description %></li>
+          <li><%= spec.values.inspect %></li>
+        </ul>
       <% end %>
       </ul>
     </li>

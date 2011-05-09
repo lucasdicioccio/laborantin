@@ -21,6 +21,7 @@ Copyright (c) 2009, Lucas Di Cioccio
 
 =end
 
+require 'laborantin/core/completeable'
 
 module Laborantin
   # The Command is a way to extend the labor script to help you modularize your
@@ -32,6 +33,8 @@ module Laborantin
 
     # An Option for a Command, to help us building a nice DSL for you.
     class Option
+
+      include Metaprog::Completeable
 
       # The name of the option.
       attr_reader :name
@@ -97,6 +100,8 @@ module Laborantin
     end
 
     class << self
+
+      include Metaprog::Completeable
 
       # The description string of a command, will be used on command line help.
       attr_accessor :description

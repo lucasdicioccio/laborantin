@@ -116,16 +116,24 @@ module Laborantin
     # An array of loggers objects.
     attr_accessor :loggers
 
+    # The (optional) commmand instanciating this environment
+    attr_accessor :command
+
     # Initializes a new instance:
     # the date is Time.now
     # the rundir is the Environment.envdir followed by the date_str
     # the loggers contains an empty Array
     # Does NOT create any directory, so the accessors can be overwritten if needed.
-    def initialize
+    def initialize(command=nil)
+      @command = command
       @date = Time.now
       @rundir = File.join(self.class.envdir, date_str)
       @loggers = []
       @config = {}
+    end
+
+    def runner
+      command.runner if command
     end
 
     # sends all the methods registered in Environment.verify

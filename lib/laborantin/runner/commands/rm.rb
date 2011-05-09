@@ -32,6 +32,9 @@ module Laborantin
         long "--scenarii=OPTIONAL"
         type Array
         default []
+        complete do |cmd|
+          completion_propositions_iterating_on(cmd, Laborantin::Scenario.all.map(&:cli_name))
+        end
       end
 
       option(:environments) do
@@ -40,6 +43,9 @@ module Laborantin
         long "--envs=OPTIONAL"
         type Array
         default []
+        complete do |cmd|
+          completion_propositions_iterating_on(cmd, Laborantin::Environment.all.map(&:cli_name))
+        end
       end
 
       option(:parameters) do

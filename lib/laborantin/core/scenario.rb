@@ -275,5 +275,13 @@ module Laborantin
       environment.log *args
     end
 
+    def command
+      environment.command
+    end
+
+    def runner
+      environment.runner
+    end
+
   end # class
 end

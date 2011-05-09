@@ -32,6 +32,9 @@ module Laborantin
         long '--analyses=OPTIONAL' 
         default []
         type Array
+        complete do |cmd|
+          completion_propositions_iterating_on(cmd, Laborantin::Analysis.all.map(&:cli_name))
+        end
       end
 
       execute do

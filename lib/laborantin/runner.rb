@@ -24,6 +24,7 @@ Copyright (c) 2009, Lucas Di Cioccio
 require 'laborantin/runner/commands/load_classes'
 require 'laborantin/runner/commands/load_results'
 require 'laborantin/runner/commands/create'
+require 'laborantin/runner/commands/complete'
 require 'laborantin/runner/commands/describe'
 require 'laborantin/runner/commands/run'
 require 'laborantin/runner/commands/find'
