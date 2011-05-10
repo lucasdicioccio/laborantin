@@ -119,6 +119,33 @@ module  Laborantin
       end
     end
 
+    def output_dirname
+      self.class.cli_name
+    end
+
+    def output_dirpath
+      File.join('.', 'reports', output_dirname)
+    end
+
+    def create_output_dir
+      FileUtils.mkdir_p(output_dirpath) unless File.directory?(output_dirpath)
+    end
+
+    def output_path(name)
+      File.join(output_dirpath, name)
+    end
+
+    def output(name, mode='r')
+      create_output_dir
+      File.open(output_path(name), mode) do |f|
+        yield f
+      end
+    end
+
+    def table(name, struct)
+      Table.new(name, struct, self.output_path(name))
+    end
+
     private
 
     # Just loads the environments and scenarii from the resultdir.

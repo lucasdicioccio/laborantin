@@ -32,6 +32,7 @@ require 'laborantin/core/describable'
 require 'laborantin/core/hookable'
 require 'laborantin/core/configurable'
 require 'laborantin/core/multi_name'
+require 'laborantin/core/table'
 
 module Laborantin
 
@@ -261,6 +262,10 @@ module Laborantin
       end
     end
 
+    def table(name, struct)
+      Table.new(name, struct, self.product_path(name))
+    end
+
     private
 
     def call_hooks(name)
@@ -282,6 +287,5 @@ module Laborantin
     def runner
       environment.runner
     end
-
   end # class
 end
