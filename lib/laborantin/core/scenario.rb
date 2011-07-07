@@ -98,10 +98,10 @@ module Laborantin
 
       # Prepares attributes' default values whenever a subclass is created.
       def inherited(klass)
-        klass.parameters = ParameterHash.new
-        klass.description = ''
-        klass.products = []
-        klass.hooks = {:setup => [], :teardown => []}
+        klass.parameters = ParameterHash.new.replace(self.parameters || {})
+        klass.description = "#{self.description} (child of #{self})"
+        klass.products = self.products ? self.products.dup : []
+        klass.hooks = Hash.new.replace(self.hooks || {:setup => [], :teardown => []})
         @@all << klass
       end
 

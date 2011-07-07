@@ -34,7 +34,7 @@ end
 
 
 module Laborantin
-  VERSION = '0.0.22'
+  VERSION = '0.1.0'
   AUTHORS = ['Lucas Di Cioccio']
   WEBSITE = 'http://dicioccio.fr/laborantin'
   LICENSE = 'GNU GPL version 3'
