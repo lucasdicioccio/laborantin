@@ -56,7 +56,8 @@ spec = Gem::Specification.new do |s|
           'lib/laborantin/extra/commands/git.rb',
           'lib/laborantin/extra/commands/git/check.rb',
           'lib/laborantin/extra/commands/git/run.rb',
-          'lib/laborantin/extra/vectorial_product.rb'
+          'lib/laborantin/extra/vectorial_product.rb',
+          'lib/laborantin/core/selector.rb',
         ]
 
         s.require_path = 'lib'

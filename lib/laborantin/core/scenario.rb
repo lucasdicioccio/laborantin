@@ -33,6 +33,7 @@ require 'laborantin/core/hookable'
 require 'laborantin/core/configurable'
 require 'laborantin/core/multi_name'
 require 'laborantin/core/table'
+require 'laborantin/core/selector'
 
 module Laborantin
 
@@ -50,9 +51,10 @@ module Laborantin
   class Scenario
     include Metaprog::Datable
     include Metaprog::Configurable
-    extend Metaprog::Describable
-    extend Metaprog::Hookable
-    extend Metaprog::MultiName
+    extend  Metaprog::Describable
+    extend  Metaprog::Hookable
+    extend  Metaprog::MultiName
+    include  Metaprog::Selector
 
     @@all = []
 
@@ -102,6 +104,7 @@ module Laborantin
         klass.description = "#{self.description} (child of #{self})"
         klass.products = self.products ? self.products.dup : []
         klass.hooks = Hash.new.replace(self.hooks || {:setup => [], :teardown => []})
+        klass.selectors = Hash.new.replace(self.selectors || {})
         @@all << klass
       end
 
@@ -173,7 +176,12 @@ module Laborantin
     # so wait one sec between several runs of same Scenario
     #
     def prepare!
-      log(self.class.description, :info) unless self.class.description.empty?
+      log "Loading prior results:" 
+      load_prior_results
+      log "Got #{scenarii.size} scenarios in #{environments.size} environments"
+      log "Description:"
+      log(self.class.description || 'no description', :info) 
+      log "Parameters:"
       log self.params.inspect, :info
       log "Preparing directory #{rundir}"
       FileUtils.mkdir_p(rundir)  #TODO: ensure unicity
