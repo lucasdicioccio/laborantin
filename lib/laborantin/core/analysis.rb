@@ -25,6 +25,7 @@ autoload :ERB, 'erb'
 
 require 'laborantin/core/describable'
 require 'laborantin/core/multi_name'
+require 'laborantin/core/selector'
 
 module  Laborantin
   # An Analysis is a handy way to reload and filter the various scenarii that were
@@ -32,25 +33,11 @@ module  Laborantin
   class Analysis
     extend Metaprog::Describable
     extend Metaprog::MultiName
+    include Metaprog::Selector
 
     class << self
-      # A hash with two items, this might change later but KISS for now.
-      attr_accessor :selectors
-
       # An array
       attr_accessor :analyses
-
-      # Add a selector to filter for the analysis only the runs that pass the selector.
-      # * sym objects (sym currently must be :environments or 
-      # :scenarii).
-      # * ary is a set of classes, only runs of this classes will be loaded
-      # * if a block is passed, only the instances for which the block is
-      # evaluated as true will be selected  (the block must take one parameter:
-      # the tested instance)
-      def select(sym, ary=[], &blk) 
-        @selectors ||= {} 
-        @selectors[sym] = {:klasses => ary, :blk => blk} 
-      end
 
       # Adds an analysis to this class.
       # str is a description of the added analysis params is a hash of
@@ -95,12 +82,6 @@ module  Laborantin
         @@all
       end
     end # << self
-
-    # An array of the Environments that could be loaded from the result directory.
-    attr_accessor :environments
-
-    # An array of the Scenarii that could be loaded from the result directory.
-    attr_reader :scenarii
 
     # TODO : recode this, maybe as nothing to do here
     def analyze 
@@ -150,14 +131,8 @@ module  Laborantin
 
     # Just loads the environments and scenarii from the resultdir.
     def initialize(*args, &blk)
-      load_from_results
+      load_prior_results
       set_instance_vars
-    end
-
-    # Load first the environments, then the scenarii.
-    def load_from_results
-      load_environments
-      load_scenarii
     end
 
     # Sets the various handy instance variables:
@@ -166,33 +141,6 @@ module  Laborantin
     def set_instance_vars
       @plots = self.class.plots.dup
       @tables = self.class.tables.dup
-    end
-
-    # Will try to load environments and set the @environments variable to an
-    # array of all the Environment instance that match the :environments class
-    # selector (set with Analysis#select).
-    def load_environments 
-      envs = Laborantin::Environment.scan_resdir('results')
-      @environments = envs.select do |env| 
-        select_instance?(env, self.class.selectors[:environments])
-      end 
-    end
-
-    # Same as load_environments, but for Scenario instances and :scenarii
-    # selector.
-    def load_scenarii
-      scii = @environments.map{|e| e.populate}.flatten
-      @scenarii = scii.select do |sc|
-        select_instance?(sc, self.class.selectors[:scenarii])
-      end
-    end
-
-    # Handy test to see if an object (that should be an instance of Environment
-    # or Scenario) matches the selector.
-    def select_instance?(obj, selector)
-      blk = selector[:blk]
-      (selector[:klasses].any?{|k| obj.is_a? k} ) and
-      (blk ? blk.call(obj) : true)
     end
 
     # Nice way to iterate on @scenarii
