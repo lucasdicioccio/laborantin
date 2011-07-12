@@ -26,6 +26,7 @@ autoload :ERB, 'erb'
 require 'laborantin/core/describable'
 require 'laborantin/core/multi_name'
 require 'laborantin/core/selector'
+require 'laborantin/core/dependencies'
 
 module  Laborantin
   # An Analysis is a handy way to reload and filter the various scenarii that were
@@ -34,6 +35,7 @@ module  Laborantin
     extend Metaprog::Describable
     extend Metaprog::MultiName
     include Metaprog::Selector
+    include Metaprog::Dependencies
 
     class << self
       # An array
@@ -127,13 +129,20 @@ module  Laborantin
       Table.new(name, struct, self.output_path(name))
     end
 
-    private
+    attr_reader :command
 
     # Just loads the environments and scenarii from the resultdir.
-    def initialize(*args, &blk)
+    def initialize(command = nil)
+      @command = command
       load_prior_results
       set_instance_vars
     end
+
+    def runner
+      command.runner if command
+    end
+
+    private
 
     # Sets the various handy instance variables:
     # * @plots

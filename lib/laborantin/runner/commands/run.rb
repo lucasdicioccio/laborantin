@@ -22,12 +22,14 @@ Copyright (c) 2009, Lucas Di Cioccio
 =end
 
 require 'laborantin'
+require 'laborantin/core/dependency_solver'
 require 'logger'
 require 'fileutils'
 
 module Laborantin
   module Commands
     class Run < Command
+      include DependencySolver
       describe 'Runs all set of scenarios and environments'
 
       option(:scenarii) do
@@ -110,6 +112,7 @@ module Laborantin
 
                   sc = sklass.new(env, cfg)
                   sc.prepare!
+                  resolve_dependencies(sc)
                   sc.perform!
                   sc.analyze! if opts[:analyze]
                 end

@@ -34,6 +34,7 @@ require 'laborantin/core/configurable'
 require 'laborantin/core/multi_name'
 require 'laborantin/core/table'
 require 'laborantin/core/selector'
+require 'laborantin/core/dependencies'
 
 module Laborantin
 
@@ -55,6 +56,7 @@ module Laborantin
     extend  Metaprog::Hookable
     extend  Metaprog::MultiName
     include  Metaprog::Selector
+    include Metaprog::Dependencies
 
     @@all = []
 
@@ -274,16 +276,6 @@ module Laborantin
       Table.new(name, struct, self.product_path(name))
     end
 
-    private
-
-    def call_hooks(name)
-      log "Calling #{name} hooks"
-      self.class.hooks[name].each do |sym| 
-        log "(#{sym})" 
-        send sym
-      end
-    end
-
     def log(*args)
       environment.log *args
     end
@@ -294,6 +286,16 @@ module Laborantin
 
     def runner
       environment.runner
+    end
+
+    private
+
+    def call_hooks(name)
+      log "Calling #{name} hooks"
+      self.class.hooks[name].each do |sym| 
+        log "(#{sym})" 
+        send sym
+      end
     end
   end # class
 end

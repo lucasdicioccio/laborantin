@@ -21,9 +21,13 @@ Copyright (c) 2009, Lucas Di Cioccio
 
 =end
 
+require 'laborantin/core/dependency_solver'
+
 module Laborantin
   module Commands
     class Analyze < Command
+      include DependencySolver
+
       describe "Runs the analyses"
 
       option(:analyses) do
@@ -50,7 +54,9 @@ module Laborantin
 
         anae.each do |klass|
           puts "Analyzing: #{klass.name}"
-          klass.new.analyze
+          analysis = klass.new(self)
+          resolve_dependencies(analysis)
+          analysis.analyze
         end
       end
     end
