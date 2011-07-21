@@ -17,7 +17,7 @@ module Laborantin
     end
 
     def header
-      @header || [comment, fields].flatten.join(separator)
+      @header || [comment, fields].flatten.join(separator).strip
     end
 
     class Filler < Proc
@@ -43,8 +43,8 @@ module Laborantin
       end
       line = strings.join(separator)
       if check
-        if line.start_with?(comment)
-          raise ArgumentError, "line starting with comment\n#{line}"
+        if line.start_with?(comment) and (not comment.empty?)
+          raise ArgumentError, "line starting with comment\n#{line}" 
         end
         expected = struct.members.size
         got = line.split(separator).size
