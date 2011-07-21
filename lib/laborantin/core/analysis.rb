@@ -27,6 +27,7 @@ require 'laborantin/core/describable'
 require 'laborantin/core/multi_name'
 require 'laborantin/core/selector'
 require 'laborantin/core/dependencies'
+require 'laborantin/core/exports'
 
 module  Laborantin
   # An Analysis is a handy way to reload and filter the various scenarii that were

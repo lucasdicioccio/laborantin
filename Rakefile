@@ -62,6 +62,7 @@ spec = Gem::Specification.new do |s|
           'lib/laborantin/core/verifications.rb',
           'lib/laborantin/core/resolutions.rb',
           'lib/laborantin/core/dependency_solver.rb',
+          'lib/laborantin/core/exports.rb',
         ]
 
         s.require_path = 'lib'
