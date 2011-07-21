@@ -5,7 +5,7 @@ module Laborantin
     module Exports
 
       def save_exports
-        log "saving exports: #{exports}"
+        log "saving exports: #{exports}" if respond_to? :log
         export_file('w') do |f|
           f.puts YAML.dump(exports)
         end
@@ -31,7 +31,7 @@ module Laborantin
       end
 
       def export(name, mime='plain/text')
-        log "#{mime}: #{name}"
+        log "#{mime}: #{name}" if respond_to? :log
         exports[name] ||= mime
       end
 
