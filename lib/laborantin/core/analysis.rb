@@ -37,6 +37,7 @@ module  Laborantin
     extend Metaprog::MultiName
     include Metaprog::Selector
     include Metaprog::Dependencies
+    include Metaprog::Exports
 
     class << self
       # An array
