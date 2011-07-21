@@ -35,6 +35,7 @@ require 'laborantin/core/multi_name'
 require 'laborantin/core/table'
 require 'laborantin/core/selector'
 require 'laborantin/core/dependencies'
+require 'laborantin/core/exports'
 
 module Laborantin
 
@@ -57,6 +58,7 @@ module Laborantin
     extend  Metaprog::MultiName
     include  Metaprog::Selector
     include Metaprog::Dependencies
+    include Metaprog::Exports
 
     @@all = []
 
@@ -212,6 +214,7 @@ module Laborantin
       end
       log "Measurement finished"
       call_hooks :teardown
+      save_exports
     end
 
     # For each product define with Scenario.produces, and in its order,
@@ -227,6 +230,7 @@ module Laborantin
           end
         end
       end
+      save_exports
     end
 
     # Returns the absolute path to a product file (see File.join) If brutname
@@ -274,6 +278,14 @@ module Laborantin
 
     def table(name, struct)
       Table.new(name, struct, self.product_path(name))
+    end
+
+    def export_file(mode='r', &blk)
+      product_file('exports.yaml', mode, true, &blk) 
+    end
+
+    def export_path
+      product_path('exports.yaml', true)
     end
 
     def log(*args)

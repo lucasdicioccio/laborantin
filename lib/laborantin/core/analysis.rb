@@ -92,6 +92,7 @@ module  Laborantin
         instance_eval &a[:blk]
         puts "done"
       end
+      save_exports
     end
 
     # TODO: more flexible
@@ -127,6 +128,14 @@ module  Laborantin
 
     def table(name, struct)
       Table.new(name, struct, self.output_path(name))
+    end
+
+    def export_file(mode='r', &blk)
+      output('exports.yaml', mode, &blk) 
+    end
+
+    def export_path
+      output_path('exports.yaml')
     end
 
     attr_reader :command
