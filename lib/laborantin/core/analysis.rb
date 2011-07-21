@@ -53,26 +53,6 @@ module  Laborantin
         @analyses << {:str => str, :params => params, :blk => blk} 
       end
 
-      def plot(title, args, &blk)
-          args ||= {}
-          hash = args.merge({:type => :plot})
-          analyze(title, hash, &blk)
-      end
-
-      def table(title, args, &blk)
-          args ||= {}
-          hash = args.merge({:type => :table})
-          analyze(title, hash, &blk)
-      end
-
-      def plots
-        analyses.select{|a| a[:params][:type] == :plots}
-      end
-
-      def tables
-        analyses.select{|a| a[:params][:type] == :tables}
-      end
-
       @@all = []
 
       def inherited(klass)
@@ -146,7 +126,6 @@ module  Laborantin
     def initialize(command = nil)
       @command = command
       load_prior_results
-      set_instance_vars
     end
 
     def runner
@@ -154,14 +133,6 @@ module  Laborantin
     end
 
     private
-
-    # Sets the various handy instance variables:
-    # * @plots
-    # * @tables
-    def set_instance_vars
-      @plots = self.class.plots.dup
-      @tables = self.class.tables.dup
-    end
 
     # Nice way to iterate on @scenarii
     def each_scenario
