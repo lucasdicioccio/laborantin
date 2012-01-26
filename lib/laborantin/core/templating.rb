@@ -8,7 +8,7 @@ module Laborantin
                    when :erb
                      Tilt::ERBTemplate.new(template_path)
                    end
-        raise RuntimeError, "unkown rendering template (please contact Laborantin's author for request for addition)" unless render
+        raise RuntimeError, "unkown rendering template (please contact Laborantin's author for request for addition)" unless type
         product_file(product_name, 'w', raw) { |f| f.puts template.render(self) }
       end
 
