@@ -60,7 +60,7 @@ module Laborantin
         return true unless selector
         blk = selector[:blk]
         (selector[:klasses].any?{|k| obj.is_a? k} ) and
-        (blk ? blk.call(obj) : true)
+        (blk ? blk.call(obj, self) : true)
       end
 
     end
