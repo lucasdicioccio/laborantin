@@ -35,11 +35,36 @@ module Laborantin
         exports[name] ||= mime
       end
 
-      def plots
-        hash = exports
-        hash.keys.select{|k| hash[k] =~ /^image/}
+      def export_all(ext, mime, dir=nil)
+        dir ||= rundir if respond_to? :rundir
+        dir ||= output_dirpath if respond_to? :output_dirpath
+        Dir.entries(rundir).select{|e| File.extname(e) == ext}.each do |file|
+          export file, mime
+        end
       end
 
+      def export_pngs
+        export_all '.png', 'image/png'
+      end
+
+      def export_svgs
+        export_all '.svg', 'image/svg+xml'
+      end
+
+      def export_eps
+        export_all '.eps', 'application/postscript'
+      end
+
+      def export_pdfs
+        export_all '.pdf', 'application/pdf'
+      end
+
+      def export_pictures
+        export_pngs
+        export_eps
+        export_svgs
+        export_pdfs
+      end
     end
   end
 end
