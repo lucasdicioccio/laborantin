@@ -36,6 +36,7 @@ require 'laborantin/core/table'
 require 'laborantin/core/selector'
 require 'laborantin/core/dependencies'
 require 'laborantin/core/exports'
+require 'laborantin/core/templating'
 
 module Laborantin
 
@@ -56,9 +57,10 @@ module Laborantin
     extend  Metaprog::Describable
     extend  Metaprog::Hookable
     extend  Metaprog::MultiName
-    include  Metaprog::Selector
+    include Metaprog::Selector
     include Metaprog::Dependencies
     include Metaprog::Exports
+    include Metaprog::Templating
 
     @@all = []
 
