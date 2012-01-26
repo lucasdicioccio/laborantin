@@ -45,7 +45,7 @@ module Laborantin
 
         dirs_to_build << rootdir
 
-        %w{analyses commands lib config environments reports results scripts scenarii}.each do |dirname|
+        %w{analyses commands lib config environments reports results scripts scenarii data}.each do |dirname|
           dirs_to_build << File.join(rootdir, dirname)
         end
 
