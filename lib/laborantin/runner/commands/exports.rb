@@ -34,11 +34,9 @@ module Laborantin
         execute do
           results = Laborantin::Commands::LoadResults.new.run([],opts)
           results[:scii].each do |sc|
-            sc.class.products.each do |name|
-              sc.exports.each_pair do |k,v|
-                path = sc.product_path(k, true)
-                puts "#{path} (#{v})"
-              end
+            sc.exports.each_pair do |k,v|
+              path = sc.product_path(k, true)
+              puts "#{path} (#{v})"
             end
           end
         end
