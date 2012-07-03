@@ -8,7 +8,7 @@ module Laborantin
       @path = path
       @separator = ' '
       @comment = '#'
-      @heaer = nil
+      @header = nil
       yield self if block_given?
     end
 
