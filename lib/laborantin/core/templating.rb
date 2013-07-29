@@ -3,6 +3,8 @@ require 'tilt'
 module Laborantin
   module Metaprog
     module Templating
+      ExtensionsMapping = {'.r' => :r, '.R' => :r, '.hs' => :haskell}
+
       def render(template_path, product_name, raw=true, type=:erb)
         template = case type
                    when :erb
@@ -19,7 +21,16 @@ module Laborantin
         Dir.chdir(rundir) { %x{#{cmd}} }
       end
 
-      def render_run(tpl, rfile, sym=:r)
+      def haskell(product_name, raw=true)
+        path = product_path(product_name, raw)
+        cmd = "runhaskell #{path}"
+        log "executing `#{cmd}`"
+        Dir.chdir(rundir) { %x{#{cmd}} }
+      end 
+
+      def render_run(tpl, rfile, sym=nil)
+        sym ||= ExtensionsMapping[File.extname(rfile)]
+        raise ArgumentError, "cannot determine method for extension: #{File.extname(rfile)}" unless sym
         render tpl, rfile
         send sym, rfile
         export_pictures

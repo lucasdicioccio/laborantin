@@ -59,11 +59,16 @@ module Laborantin
         export_all '.pdf', 'application/pdf'
       end
 
+      def export_tables
+        export_all '.dat', 'text/datfile'
+      end
+
       def export_pictures
         export_pngs
         export_eps
         export_svgs
         export_pdfs
+        export_tables
       end
     end
   end

@@ -279,7 +279,7 @@ module Laborantin
     end
 
     def table(name, struct)
-      Table.new(name, struct, self.product_path(name))
+      Table.new(name, struct, self.product_path("#{name}.dat", true))
     end
 
     def export_file(mode='r', &blk)
