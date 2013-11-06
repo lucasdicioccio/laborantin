@@ -111,6 +111,7 @@ module Laborantin
         klass.products = self.products ? self.products.dup : []
         klass.hooks = Hash.new.replace(self.hooks || {:setup => [], :teardown => []})
         klass.selectors = Hash.new.replace(self.selectors || {})
+        klass.dependencies = Array.new.replace(self.dependencies || [])
         @@all << klass
       end
 

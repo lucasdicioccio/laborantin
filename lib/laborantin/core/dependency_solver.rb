@@ -5,7 +5,9 @@ module Laborantin
   # we rely on the implementer to not create dependency loops.
   # The whole dependency design is extremely wasteful, but it works.
   module DependencySolver
-    def resolve_dependencies(obj, previously_wrong=[])
+    def resolve_dependencies(obj, previously_wrong=[],&blk)
+      yield obj if block_given?
+
       valid, wrong = obj.class.dependencies.partition do |dep|
         dep.valid?(obj)
       end
@@ -22,7 +24,7 @@ module Laborantin
             # the assumption is that resolving a dep costs more than testing if it's valid or not
             dep.verifications.each{|v| v.resolve!(obj)} unless dep.valid?(obj) 
           end
-          resolve_dependencies(obj, wrong)
+          resolve_dependencies(obj, wrong, &blk)
         end
       end
     end
