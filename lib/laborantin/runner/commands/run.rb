@@ -112,7 +112,7 @@ module Laborantin
 
                   sc = sklass.new(env, cfg)
                   sc.prepare!
-                  resolve_dependencies(sc)
+                  resolve_dependencies(sc,&:load_prior_results)
                   sc.perform!
                   sc.analyze! if opts[:analyze]
                 end

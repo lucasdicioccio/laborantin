@@ -77,9 +77,13 @@ module Laborantin
           sc.environment.log "#{sc.environment.class.name} - #{sc.class.name}", :info
           sc.environment.log "Replaying products #{sc.params.inspect}"
           if opts[:methods].empty?
+            sc.load_prior_results
             sc.analyze!
           else
-            opts[:methods].each{ |meth| sc.send meth }
+            opts[:methods].each do |meth|
+              sc.load_prior_results
+              sc.send meth
+            end
           end
         end
       end # execute
